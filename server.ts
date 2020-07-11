@@ -3,7 +3,7 @@ import {
   WebSocketServer,
 } from "https://deno.land/x/websocket/mod.ts";
 import {
-  Application
+  Application,
 } from "https://deno.land/x/oak/mod.ts";
 import { parseMessage } from "./src/services/parser.ts";
 import Body from "./src/interfaces/Body.ts";

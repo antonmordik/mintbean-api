@@ -5,8 +5,8 @@ export interface User {
   nickname: string;
 }
 
-export interface IncommingUser extends Omit<User, '_id'> {}
+export interface IncommingUser extends Omit<User, "_id"> {}
 
-export interface UserDTO extends Omit<IncommingUser, 'password'> {
+export interface UserDTO extends Omit<IncommingUser, "password"> {
   id: string;
 }

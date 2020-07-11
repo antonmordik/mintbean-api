@@ -20,7 +20,7 @@ export class UserStorage {
 
   private async checkUniqEmail(email: string): Promise<boolean> {
     const users = await this.collection.find() as User[];
-    return users.every(user => user.email !== email);
+    return users.every((user) => user.email !== email);
   }
 
   public async add(user: IncommingUser): Promise<[string, UserDTO]> {
@@ -29,7 +29,25 @@ export class UserStorage {
     }
     user.password = await hash(user.password);
     const result = await this.collection.insertOne(user);
-    const transfer = this.transformUser({...user, _id: result });
+    const transfer = this.transformUser({ ...user, _id: result });
     return [await generate(transfer), transfer];
+  }
+
+  public async login(
+    { email, password }: Omit<IncommingUser, "nickname">,
+  ): Promise<[string, UserDTO]> {
+    const users = await this.collection.find() as User[];
+    for (const user of users) {
+      if (user.email === email) {
+        const isPasswordValid = await verify(password, user.password);
+        if (isPasswordValid) {
+          const transfer = this.transformUser(user);
+          return [await generate(transfer), transfer];
+        } else {
+          throw new Error("Incorrect password.");
+        }
+      }
+    }
+    throw new Error("User with this email doesn't exisits.");
   }
 }
