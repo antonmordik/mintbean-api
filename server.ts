@@ -5,6 +5,7 @@ import {
 import {
   Application,
 } from "https://deno.land/x/oak/mod.ts";
+import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import { parseMessage } from "./src/services/parser.ts";
 import Body from "./src/interfaces/Body.ts";
 import Message from "./src/constants/Message.ts";
@@ -26,7 +27,7 @@ wss.on("connection", (ws: WebSocket) => {
 });
 
 const app = new Application();
-
+app.use(oakCors({ credentials: true, origin: true  }));
 app.use(router.routes());
 app.use(router.allowedMethods());
 
