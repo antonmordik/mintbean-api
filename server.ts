@@ -17,7 +17,6 @@ const wss = new WebSocketServer(parseInt(config.WS_PORT));
 
 wss.on("connection", (ws: WebSocket) => {
   ws.on("message", (message: string) => {
-    console.log(message);
     const [type, user, body] = parseMessage<Body>(message);
     if (type === Message.Error) {
       return ws.close(1000, WSError.InvalidBody);
