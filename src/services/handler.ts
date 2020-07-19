@@ -20,7 +20,7 @@ export const handleMessage = async (
   const { user, pool, ws } = options;
   switch (type) {
     case Message.Connect: {
-      pool.pushToQueue(user);
+      pool.pushToQueue(user, ws);
       return ws.send(
         createMessage(
           Message.Connected,
