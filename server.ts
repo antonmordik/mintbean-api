@@ -8,15 +8,12 @@ import {
 import { oakCors } from "https://deno.land/x/cors/mod.ts";
 import { parseMessage } from "./src/services/messages/parser.ts";
 import Body from "./src/interfaces/Body.ts";
-import Message from "./src/constants/Message.ts";
-import WSError from "./src/constants/WSError.ts";
 import config from "./src/config.ts";
 import router from "./src/router.ts";
 import { handleMessage } from "./src/services/handler.ts";
-import GamePool from "./src/pool.ts";
+import { Online } from "./src/services/online.ts";
 
-const pool = new GamePool();
-
+const online = new Online();
 const wss = new WebSocketServer(parseInt(config.WS_PORT));
 console.log("Web Socket server start on port " + config.WS_PORT);
 
@@ -26,10 +23,8 @@ wss.on("connection", (ws: WebSocket) => {
     handleMessage(type, body, {
       user,
       ws,
-      pool,
+      online
     });
-    // console.log(user, body);
-    // ws.send(message);
   });
 });
 
